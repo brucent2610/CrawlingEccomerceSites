@@ -1,0 +1,4 @@
+rq
+requests
+parse
+pathlib

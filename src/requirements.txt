@@ -1,6 +1,7 @@
 python-dotenv
 parse
 pathlib
+rq
 
 #Scrapy Additional Package
 Scrapy
@@ -8,3 +9,6 @@ scrapy-rotating-proxies
 
 #Mongo
 pymongo
+
+#Redis
+redis

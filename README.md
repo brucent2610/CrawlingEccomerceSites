@@ -65,3 +65,64 @@ categories = collection.find({
     }
 }).limit(${limit})
 ```
+**Duplicate Data**
+- Problem: Crawl sometimes will get duplicate products because of bugs or logic failed
+- Resolve: Using Aggregation to find
+```
+// Products Collection
+db.products.aggregate([
+    {
+        $group: {
+            _id: "$id",
+            count: { $sum: 1 },
+        },
+    },
+    {
+        $match: {
+            _id: { $ne: null },
+            count: { $gt: 1 },
+        },
+    },
+    { 
+        $sort: { 
+            count: -1 
+        } 
+    },
+    { 
+        $project: { 
+            id: "$_id", 
+            _id: 0 
+        } 
+    },
+]);
+```
+```
+// Categories Collection
+db.categories.aggregate([
+    {
+        $group: {
+            _id: "$category_id",
+            count: { $sum: 1 },
+        },
+    },
+    {
+        $match: {
+            _id: { $ne: null },
+            count: { $gt: 1 },
+        },
+    },
+    { 
+        $sort: { 
+            count: -1 
+        } 
+    },
+    { 
+        $project: { 
+            category_id: "$_id", 
+            _id: 0 
+        } 
+    },
+]);
+```
+
+# Suggestions for using those data

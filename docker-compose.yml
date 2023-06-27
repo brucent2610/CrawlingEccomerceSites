@@ -14,18 +14,41 @@ services:
     ports:
       - "27017:27017"
     command: mongod --auth
+  ecommerce-images-redis:
+    image: redis
+    ports:
+      - 6379:6379
   ecommerce-crawling-app:
     depends_on:
       - ecommerce-crawling-mongo
+      - ecommerce-images-redis
     build:
       context: ./src
       dockerfile: ./docker/.Dockerfile
     volumes:
       - ./src:/usr/src/app
     command: python main.py
+    # command: python spider2.py
+    # command: python spider3.py
+    # command: scrapy crawl TikiCategoryApi --nolog
+    # command: scrapy crawl TikiProductApi --nolog
     environment:
       ENV: ${ENV}
       MONGO_URI: ${MONGO_URI}
       MONGO_DATABASE: ${MONGO_DATABASE}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
       LIMIT: ${LIMIT}
+  ecommerce-images-worker:
+    depends_on:
+      - ecommerce-images-redis
+    build:
+      context: ./src/ecommerces_images
+      dockerfile: ./docker/.Dockerfile
+    volumes:
+      - ./src/ecommerces_images:/usr/src/app
+      - ./data/images:/usr/src/images
+    environment:
+      ENV: ${ENV}
+      REDIS_URL: ${REDIS_URL}
 

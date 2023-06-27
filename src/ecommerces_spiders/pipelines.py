@@ -8,6 +8,11 @@
 from itemadapter import ItemAdapter
 from Database import Database
 
+import os
+
+from redis import Redis
+from rq import Queue
+
 class EcommercesSpidersPipeline:
 
     def __init__(self):
@@ -186,6 +191,7 @@ class EcommercesSpidersTikiProductPipeline:
 
     def __init__(self, mongodb):
         self.mongodb = mongodb
+        self.q = Queue(connection=Redis(host=os.getenv("REDIS_HOST"),port=os.getenv("REDIS_PORT")))
 
     def process_item(self, item, spider):
         if(item["id"] is None):
@@ -194,10 +200,39 @@ class EcommercesSpidersTikiProductPipeline:
         try:
             print(self.TAG, "Start Pipeline: ", spider.name)
 
+            progress_image_status = 1
+            if "images" in item:
+                try:
+                    image_urls = []
+                    if "images" in item:
+                        images = item["images"]
+                        for image in images:
+                            if "base_url" in image:
+                                image_urls.append(image["base_url"])
+                            if "large_url" in image:
+                                image_urls.append(image["large_url"])
+                            if "medium_url" in image:
+                                image_urls.append(image["medium_url"])
+                            if "small_url" in image:
+                                image_urls.append(image["small_url"])
+                            if "thumbnail_url" in item:
+                                image_urls.append(image["thumbnail_url"])
+
+                    print("Add queue to progress image", image_urls)
+                    result_queue = self.q.enqueue("utils.store_images", "tiki", image_urls)
+                    print("result_queue", result_queue)
+                except Exception as error:
+                    print("result_queue", error)
+                    progress_image_status = 0
+
             collection = self.mongodb["products"] 
             product = collection.find_one({
                 'id': item["id"]
             })
+
+            item["progress_image_status"] = progress_image_status
+            # item["is_crawl_detail"] = True
+
             if product:
                 item_updated = item.copy()
                 del item_updated['id']

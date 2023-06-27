@@ -4,7 +4,10 @@ from urllib.parse import urlparse, parse_qs
 class TikicategoryapiSpider(scrapy.Spider):
     name = "TikiCategoryApi"
     allowed_domains = ["tiki.vn"]
-    start_urls = ["https://tiki.vn/api/personalish/v1/blocks/listings?page=1&limit=40&aggregations=2&category=11601"]
+    start_urls = [
+        "https://tiki.vn/api/personalish/v1/blocks/listings?page=1&limit=100&aggregations=2&category=44792",
+        "https://tiki.vn/api/personalish/v1/blocks/listings?page=1&limit=100&aggregations=2&category=54042"
+    ]
 
     # def __init__(self, cat=0, pages="1,100", limit=100):
     #     self.category_id = int(cat)
