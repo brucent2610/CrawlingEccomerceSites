@@ -42,7 +42,8 @@ Download all images to local storage
 Suggest idea to use those data
 
 # Architecture
-[Architecture Version 01](https://i.imgur.com/hXIqMrh.png)
+- [Architecture Version 01](https://i.imgur.com/hXIqMrh.png) - First planning
+- [Architecture Version 02](https://i.imgur.com/aBCdf2K.png) - Upgrade plan with new Redis Queue to progress images and more schema of data
 
 # Issues when crawling data
 **Missing User Agent**
