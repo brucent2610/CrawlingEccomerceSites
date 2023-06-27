@@ -1,0 +1,12 @@
+.idea
+/data
+
+#Data and Settings mongo
+/mongo/001_users.js
+
+.env
+
+__pycache__
+*/__pycache__/*
+
+.DS_Store

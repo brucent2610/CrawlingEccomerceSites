@@ -1,0 +1,10 @@
+python-dotenv
+parse
+pathlib
+
+#Scrapy Additional Package
+Scrapy
+scrapy-rotating-proxies
+
+#Mongo
+pymongo

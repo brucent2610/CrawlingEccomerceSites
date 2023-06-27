@@ -1,0 +1,31 @@
+version: '3'
+services:
+  ecommerce-crawling-mongo:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_DATABASE: ecommerce
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_ROOT_USERNAME: admin
+    volumes:
+      - ./mongo/001_users.js:/docker-entrypoint-initdb.d/001_users.js:ro
+      - ./mongo/db:/data/db
+      - ./mongo/configdb:/data/configdb
+      - ./data/backup:/data/backup
+    ports:
+      - "27017:27017"
+    command: mongod --auth
+  ecommerce-crawling-app:
+    depends_on:
+      - ecommerce-crawling-mongo
+    build:
+      context: ./src
+      dockerfile: ./docker/.Dockerfile
+    volumes:
+      - ./src:/usr/src/app
+    command: python main.py
+    environment:
+      ENV: ${ENV}
+      MONGO_URI: ${MONGO_URI}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      LIMIT: ${LIMIT}
+

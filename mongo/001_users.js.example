@@ -1,0 +1,22 @@
+db.createUser(
+    {
+        user: "username1",
+        pwd: "password1",
+        roles: [
+            {
+                role: "readWrite",
+                db: "ecommerce"
+            }
+        ]
+    }
+);
+db.createUser({
+    user: "username2",
+    pwd: "password2",
+    roles: [ 
+        { 
+            role: "userAdminAnyDatabase", 
+            db: "admin" 
+        } 
+    ]
+})
