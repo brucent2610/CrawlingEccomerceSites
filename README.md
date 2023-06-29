@@ -30,6 +30,9 @@ Change Data Capture (CDC) from MongoDB to MySQL with some specific attributes
 * Price
 * Category ID
 
+**Reference**
+[Github](https://github.com/debezium/debezium-examples/tree/main/unwrap-mongodb-smt)
+
 Statistics data
 * How many products in each categories
 * Original of products, how many products from China, compare rate between each country
@@ -44,6 +47,41 @@ Suggest idea to use those data
 # Architecture
 - [Architecture Version 01](https://i.imgur.com/hXIqMrh.png) - First planning
 - [Architecture Version 02](https://i.imgur.com/aBCdf2K.png) - Upgrade plan with new Redis Queue to progress images and more schema of data
+- [Architecture Version 03](https://i.imgur.com/OxlUmrX.png) - Upgrade CDC (Change Data Capture) from MongoDB to MySQL
+
+# Preparations
+```
+# Prepare env file
+cp .env.example .env
+
+# Run services to support the crawling
+docker-compose up -d ecommerce-crawling-mongo ecommerce-images-redis ecommerce-mysql ecommerce-zookeeper ecommerce-kafka ecommerce-debezium-connect
+
+# JDBC sink connector
+cd debezium-jdbc
+# Create connector
+curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://${ecommerce-debezium-connect}:8083/connectors/ -d @jdbc-sink-post.json
+
+# Update connector
+curl -i -X PUT -H "Accept:application/json" -H  "Content-Type:application/json" http://127.0.0.1:8083/connectors/jdbc-sink/config -d @jdbc-sink-put.json
+
+# Debezium MongoDB CDC connector
+cd debezium-jdbc
+# Create connector
+curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://${ecommerce-debezium-connect}:8083/connectors/ -d @mongodb-source-post.json
+# Update connector
+curl -i -X PUT -H "Accept:application/json" -H  "Content-Type:application/json" http://127.0.0.1:8083/connectors/ecommerce-connector/config/ -d @mongodb-source-put.json
+```
+
+# Running crawling
+```
+docker-compose up ecommerce-crawling-app
+```
+
+# Backup results
+```
+
+```
 
 # Issues when crawling data
 **Missing User Agent**

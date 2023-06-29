@@ -3,6 +3,7 @@
 
 #Data and Settings mongo
 /mongo/001_users.js
+/mongors/001_users.js
 
 .env
 

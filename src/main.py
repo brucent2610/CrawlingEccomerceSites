@@ -27,7 +27,7 @@ if __name__ == "__main__":
         }
     }
     
-    products = collection.find(query).limit(2)
+    products = collection.find(query).limit(4)
 
     test = 0
     while products is not None:

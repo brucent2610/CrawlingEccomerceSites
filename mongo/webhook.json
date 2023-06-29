@@ -1,0 +1,37 @@
+{
+    "live": "true",
+    "notificationItems": [
+        {
+            "NotificationRequestItem": {
+                "additionalData": {
+                    "expiryDate": "02/2024",
+                    "authCode": "007472",
+                    "cardSummary": "1189",
+                    "threeds2.cardEnrolled": "true",
+                    "checkoutSessionId": "CSDF04670FD3E7DCC6",
+                    "checkout.cardAddedBrand": "visapremiumcredit",
+                    "cardFunction": "Consumer",
+                    "hmacSignature": "Ivem/1DLWR85rclEHyXuHjTV1zyaDMVw0LyAFxcgpcU="
+                },
+                "amount": {
+                    "currency": "SGD",
+                    "value": 660
+                },
+                "eventCode": "AUTHORISATION",
+                "eventDate": "2023-06-27T09:37:30+02:00",
+                "merchantAccountCode": "ALLDAY_ECOM",
+                "merchantReference": "MTY4Nzg1MDc5My0wNDc1LS0wLS0xYTlmZGRjNi0zOGNlLTQ4YmEtOWI2ZC0xZjlkZDgyMjgxOTU=",
+                "operations": [
+                    "CANCEL",
+                    "CAPTURE",
+                    "REFUND"
+                ],
+                "paymentMethod": "visa",
+                "pspReference": "ZRGM4WD7WL9GX632",
+                "reason": "007472:1189:02/2024",
+                "success": "true"
+            }
+        }
+    ],
+    "customOrderId": "MTY4Nzg1MDc5My0wNDc1LS0wLS0xYTlmZGRjNi0zOGNlLTQ4YmEtOWI2ZC0xZjlkZDgyMjgxOTU="
+}

@@ -3,21 +3,106 @@ services:
   ecommerce-crawling-mongo:
     image: mongo:latest
     environment:
-      MONGO_INITDB_DATABASE: ecommerce
-      MONGO_INITDB_ROOT_PASSWORD: admin
-      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
     volumes:
       - ./mongo/001_users.js:/docker-entrypoint-initdb.d/001_users.js:ro
+      - ./mongo/file.key:/data/file.key:ro
       - ./mongo/db:/data/db
       - ./mongo/configdb:/data/configdb
       - ./data/backup:/data/backup
+    links:
+      - ecommerce-crawling-mongo-rs1
+      - ecommerce-crawling-mongo-rs2
     ports:
       - "27017:27017"
-    command: mongod --auth
+    restart: always
+    command: mongod --auth --bind_ip_all --replSet dbrs --keyFile /data/file.key
+  ecommerce-crawling-mongo-rs1:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+    volumes:
+      - ./mongors/001_users.js:/docker-entrypoint-initdb.d/001_users.js:ro
+      - ./mongo/file.key:/data/file.key:ro
+      - ./mongors/db1:/data/db
+      - ./mongors/configdb2:/data/configdb
+    ports:
+      - "27018:27017"
+    restart: always
+    command: mongod --auth --bind_ip_all --replSet dbrs --keyFile /data/file.key
+  ecommerce-crawling-mongo-rs2:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+    volumes:
+      - ./mongors/001_users.js:/docker-entrypoint-initdb.d/001_users.js:ro
+      - ./mongo/file.key:/data/file.key:ro
+      - ./mongo/setup.sh:/data/setup.sh:ro
+      - ./mongors/db2:/data/db
+      - ./mongors/configdb2:/data/configdb
+    ports:
+      - "27019:27017"
+    restart: always
+    command: mongod --auth --bind_ip_all --replSet dbrs --keyFile /data/file.key
   ecommerce-images-redis:
     image: redis
     ports:
       - 6379:6379
+  ecommerce-mysql:
+    image: mysql:${MYSQL_VERSION}
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes: 
+      - ./mysql:/var/lib/mysql
+  ecommerce-zookeeper:
+    image: quay.io/debezium/zookeeper:${DEBEZIUM_VERSION}
+    ports:
+      - 2181:2181
+      - 2888:2888
+      - 3888:3888
+  ecommerce-kafka:
+    image: quay.io/debezium/kafka:${DEBEZIUM_VERSION}
+    ports:
+      - 9092:9092
+    links:
+      - ecommerce-zookeeper
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: "ecommerce-kafka"
+      KAFKA_ADVERTISED_PORT: "9092"
+      ZOOKEEPER_CONNECT: ecommerce-zookeeper:2181
+  ecommerce-debezium-connect:
+    image: debezium/connect-jdbc:${DEBEZIUM_VERSION}
+    build:
+      context: debezium-jdbc
+      dockerfile: ./docker/.Dockerfile
+      args:
+        DEBEZIUM_VERSION: ${DEBEZIUM_VERSION}
+        MYSQL_VERSION: ${MYSQL_VERSION}
+    ports:
+      - 8083:8083
+    links:
+      - ecommerce-kafka
+      - ecommerce-crawling-mongo
+      - ecommerce-mysql
+    environment:
+      - BOOTSTRAP_SERVERS=ecommerce-kafka:9092
+      - GROUP_ID=1
+      - CONFIG_STORAGE_TOPIC=my_connect_configs
+      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+      - STATUS_STORAGE_TOPIC=my_source_connect_statuses
+    volumes: 
+      - ./debezium-jdbc/connector:/kafka-connect/debezium-connector
   ecommerce-crawling-app:
     depends_on:
       - ecommerce-crawling-mongo
@@ -51,4 +136,3 @@ services:
     environment:
       ENV: ${ENV}
       REDIS_URL: ${REDIS_URL}
-
