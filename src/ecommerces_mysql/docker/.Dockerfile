@@ -12,7 +12,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-COPY ../worker.py .
 COPY ../main.py .
 COPY ../utils.py .
 

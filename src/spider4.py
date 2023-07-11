@@ -24,7 +24,15 @@ if __name__ == "__main__":
     process = CrawlerProcess(setting)
 
     collection = mongodb["products"]
-    query = {"error":"Expecting value: line 1 column 1 (char 0)"}
+
+    # 1. Query when first time check and track point where to crawl
+    # query = {"is_crawl_detail":{"$ne": True}}
+
+    # 2. Query after there is issue with Capcha
+    # query = {"error":"Expecting value: line 1 column 1 (char 0)"}
+
+    # 3. Query recheck status not 200
+    query = {"status": {"$ne": 200}}
     
     products = collection.find(query).skip(int(SKIP)).limit(int(LIMIT))
 

@@ -1,0 +1,374 @@
+{
+    "_id": {
+        "$oid": "649942c8e9c823ca18daca0b"
+    },
+    "id": 46600215,
+    "sku": "6636922032221",
+    "name": "Hộp kẹp tóc cho bé - Màu cam (Quà tặng đáng yêu cho bé gái) - kèm hộp có quai xách",
+    "url_key": "hop-kep-toc-cho-be-mau-cam-qua-tang-dang-yeu-cho-be-gai-kem-hop-co-quai-xach-p46600215",
+    "url_path": "hop-kep-toc-cho-be-mau-cam-qua-tang-dang-yeu-cho-be-gai-kem-hop-co-quai-xach-p46600215.html?spid=46600216",
+    "type": "simple",
+    "author_name": "",
+    "book_cover": null,
+    "brand_name": "OEM",
+    "short_description": "- Sản phẩm hộp kẹp tóc bao gồm: 13 loại kẹp khác nhau: kẹp tóc nơ lớn, nơ nhỏ, kẹp tóc thỏ, kẹp tóc vương miệng, kẹp hoa, kẹp tóc ngôi cột tóc, trong đó là 2 cột đôi 2 bên và 1 dây băng.- Các kẹp tóc ...",
+    "price": 67000,
+    "list_price": 67000,
+    "badges": [
+        {
+            "code": "new_pdp",
+            "text": "v1"
+        }
+    ],
+    "badges_new": [],
+    "discount": 0,
+    "discount_rate": 0,
+    "rating_average": 4.7,
+    "review_count": 211,
+    "order_count": 0,
+    "favourite_count": 0,
+    "thumbnail_url": "https://salt.tikicdn.com/cache/280x280/ts/product/9e/dc/73/ed2c0fef52f1dd71edea8173e0a607cf.jpg",
+    "thumbnail_width": 280,
+    "thumbnail_height": 280,
+    "freegift_items": [],
+    "has_ebook": false,
+    "inventory_status": "available",
+    "is_visible": false,
+    "productset_id": 2035,
+    "productset_group_name": "",
+    "seller": null,
+    "is_flower": false,
+    "is_gift_card": false,
+    "inventory": {
+        "product_virtual_type": null,
+        "fulfillment_type": "tiki_delivery"
+    },
+    "url_attendant_input_form": "",
+    "option_color": [],
+    "stock_item": {
+        "max_sale_qty": 1000,
+        "min_sale_qty": 1,
+        "preorder_date": null,
+        "qty": 1000
+    },
+    "salable_type": null,
+    "seller_product_id": 219178561,
+    "installment_info": null,
+    "url_review": "",
+    "bundle_deal": false,
+    "quantity_sold": {
+        "text": "Đã bán 1107",
+        "value": 1107
+    },
+    "video_url": "https://sand.tikicdn.com/ts/video/87/85/08/bc299a2e6721fedd43916fd9eef67cd0.mp4",
+    "tiki_live": null,
+    "original_price": 67000,
+    "shippable": true,
+    "impression_info": [
+        {
+            "impression_id": "thanos-product-BfRhgfzpabAf65fQ",
+            "metadata": {
+                "price": 61998,
+                "rating_average": 0,
+                "reviews_count": 0,
+                "seller_product_id": 219178561
+            },
+            "checksum": ""
+        },
+        {
+            "impression_id": "f774cb87-c83d-47f7-a908-daa65ec1306f",
+            "metadata": {
+                "product_id": 2035,
+                "service_name": "reco",
+                "version": "p_category_mpid_listing_v1_202306250600"
+            },
+            "checksum": ""
+        }
+    ],
+    "advertisement": null,
+    "availability": 1,
+    "primary_category_path": "1/2/2549/11603/5192/5280",
+    "product_reco_score": 0,
+    "seller_id": 37005,
+    "add_on": [
+        {
+            "id": 249387447,
+            "name": "[12 Tháng] Gói an tâm sử dụng sản phẩm",
+            "thumbnail_url": "https://salt.tikicdn.com/cache/280x280/ts/product/ae/8b/82/2d87581a51f5188d98d8f1afc535dad8.png",
+            "price": 1000,
+            "add_on_description": "Bảo hiểm cho bạn và người thân trước những sự cố bất ngờ trong quá trình sử dụng sản phẩm\nThời hạn bảo hiểm: 12 tháng\nBồi hoàn chi phí y tế: 500% giá bán sản phẩm, tối đa 15.000.000 ₫\nĐền bù thiệt hại tài sản: 500% giá bán sản phẩm, tối đa 15.000.000 ₫\nBồi thường khi tử vong, thương tật: 500% giá bán sản phẩm, tối thiểu 10.000.000 ₫ và tối đa 200.000.000 ₫\nÁp dụng cho các sản phẩm mua trên Tiki bán kèm bảo hiểm này\nGởi yêu cầu bồi thường 100% trực tuyến\nDịch vụ Bảo hiểm cung cấp bởi Công ty Bảo hiểm PVI uy tín\nBấm THÔNG TIN CHI TIẾT bên dưới để xem toàn bộ quyền lợi và nội dung chương trình",
+            "add_on_description_list": [
+                "Bảo hiểm cho bạn và người thân trước những sự cố bất ngờ trong quá trình sử dụng sản phẩm",
+                "Thời hạn bảo hiểm: 12 tháng",
+                "Bồi hoàn chi phí y tế: 500% giá bán sản phẩm, tối đa 15.000.000 ₫",
+                "Đền bù thiệt hại tài sản: 500% giá bán sản phẩm, tối đa 15.000.000 ₫",
+                "Bồi thường khi tử vong, thương tật: 500% giá bán sản phẩm, tối thiểu 10.000.000 ₫ và tối đa 200.000.000 ₫",
+                "Áp dụng cho các sản phẩm mua trên Tiki bán kèm bảo hiểm này",
+                "Gởi yêu cầu bồi thường 100% trực tuyến",
+                "Dịch vụ Bảo hiểm cung cấp bởi Công ty Bảo hiểm PVI uy tín",
+                "Bấm THÔNG TIN CHI TIẾT bên dưới để xem toàn bộ quyền lợi và nội dung chương trình"
+            ],
+            "list_price": 1000,
+            "is_visible": false,
+            "url": "https://tiki.vn/12-thang-goi-an-tam-su-dung-san-pham-p249387447.html",
+            "add_on_information_title": "Thông tin chi tiết",
+            "add_on_information_url": "https://tiki.vn/bao-hiem-so/186/thong-tin",
+            "is_default_select_addon": 1
+        }
+    ],
+    "add_on_title": "Dịch Vụ Mua Kèm",
+    "all_time_quantity_sold": 1107,
+    "asa_cashback_widget": {
+        "sep": 0,
+        "rate": 205,
+        "astra_convert_rate": 0,
+        "text_color": "#402DA1",
+        "short_description": "Tham gia các gói thành viên Astra Rewards cao cấp hơn để được nhiều ưu đãi hơn",
+        "background_color": "#F2F0FE",
+        "asa_plus_badge": "",
+        "new_badge": "https://salt.tikicdn.com/ts/upload/43/01/71/d74d0e9e37a9bb14f35dcc0c816d2038.gif",
+        "text": "Thưởng 0,65 ASA (≈ 134đ)",
+        "icon": {
+            "height": 16,
+            "width": 13,
+            "url": "https://salt.tikicdn.com/ts/upload/df/e2/b4/063c4d55ca380f818547f00f5175d39f.png"
+        },
+        "button": {
+            "text": "Khám phá thêm",
+            "url": "https://tiki.vn/sep/my-sep"
+        },
+        "amplitude": {
+            "has_freeship_plus_benefit": true,
+            "partner_rewards_amount": 0,
+            "tiki_rewards_amount": 0.65458988,
+            "total_rewards_amount": 0.65458988
+        },
+        "benefits": {
+            "title": "Bạn là thành viên",
+            "sub_title": "Thưởng 0,65 ASA",
+            "benefit_text": "Điểm thưởng Astra dùng để làm gì?",
+            "sub_icon": "https://salt.tikicdn.com/ts/upload/7a/bf/c4/6ae829cb4698d5badb38413c0dafe354.png",
+            "type": "sep_required",
+            "information_url": "https://tiki.vn/sep/my-sep",
+            "icon_title": "https://salt.tikicdn.com/ts/ta/1b/13/fa/0d470315888a2551f4645632a99023a3.png",
+            "list": [
+                {
+                    "icon": "https://salt.tikicdn.com/ts/upload/31/1a/54/f4ad6056005c3c4b91d746cd5cd72e5a.png",
+                    "text": "Đổi Astra lấy mã giảm giá & freeship",
+                    "link": null
+                },
+                {
+                    "icon": "https://salt.tikicdn.com/ts/upload/c9/a4/3f/ce4ec9a0e3c40aeb75a41ec4c181382f.png",
+                    "text": "Astra có thể trao đổi mua bán sang Tiki Xu",
+                    "link": null
+                },
+                {
+                    "icon": "https://salt.tikicdn.com/ts/upload/4c/26/19/fc8035082d1c3cf77e23bd2529d93f1e.png",
+                    "text": "Astra sinh lời khi bỏ ống Heo Vàng Astra",
+                    "link": null
+                }
+            ]
+        },
+        "non_login_url_path": "https://tiki.vn/sep"
+    },
+    "benefits": [
+        {
+            "icon": "https://salt.tikicdn.com/ts/upload/2c/48/44/720434869e103b03aaaf1a104d91ad25.png",
+            "text": "Hoàn tiền<br><b>111%</b><br>nếu hàng giả"
+        },
+        {
+            "icon": "https://salt.tikicdn.com/ts/upload/4b/a1/23/1606089d5423e5cba05e3820ad39708e.png",
+            "text": "Thông tin<br>bảo hành",
+            "extra_text": "XEM CHI TIẾT",
+            "extra_header": "Thông tin bảo hành",
+            "extra": [
+                {
+                    "name": "Nhà cung cấp",
+                    "value": "BIDIKID"
+                },
+                {
+                    "name": "Hướng dẫn bảo hành",
+                    "value": "Xem chi tiết",
+                    "url": "https://hotro.tiki.vn/s/article/chinh-sach-bao-hanh-tai-tiki-nhu-the-nao"
+                }
+            ]
+        },
+        {
+            "icon": "https://salt.tikicdn.com/ts/upload/63/75/6a/144ada409519d72e2978ad2c61bc02a7.png",
+            "text": "Đổi trả trong<br><b>30 ngày</b><br>nếu sp lỗi."
+        }
+    ],
+    "brand": {
+        "id": 111461,
+        "name": "OEM",
+        "slug": "oem"
+    },
+    "breadcrumbs": [
+        {
+            "url": "/do-choi-me-be/c2549",
+            "name": "Đồ Chơi - Mẹ & Bé",
+            "category_id": 2549
+        },
+        {
+            "url": "/thoi-trang-cho-me-va-be/c11603",
+            "name": "Thời Trang Cho Mẹ Và Bé",
+            "category_id": 11603
+        },
+        {
+            "url": "/phu-kien-cho-be/c5192",
+            "name": "Phụ kiện cho bé",
+            "category_id": 5192
+        },
+        {
+            "url": "/phu-kien-toc-cho-be/c5280",
+            "name": "Phụ kiện tóc cho bé",
+            "category_id": 5280
+        },
+        {
+            "url": "https://tiki.vn/hop-kep-toc-cho-be-mau-cam-qua-tang-dang-yeu-cho-be-gai-kem-hop-co-quai-xach-p46600215.html",
+            "name": "Hộp kẹp tóc cho bé - Màu cam (Quà tặng đáng yêu cho bé gái) - kèm hộp có quai xách",
+            "category_id": 0
+        }
+    ],
+    "categories": {
+        "id": 5280,
+        "name": "Phụ kiện tóc cho bé",
+        "is_leaf": true
+    },
+    "current_seller": {
+        "id": 70742,
+        "sku": "4116706593350",
+        "name": "BIDIKID",
+        "link": "https://tiki.vn/cua-hang/bidikid",
+        "logo": "63/0f/37/79fdbcffafba98c6a74d0741415648d0.png",
+        "price": 67000,
+        "product_id": "46600216",
+        "store_id": 66012,
+        "is_best_store": false,
+        "is_offline_installment_supported": null
+    },
+    "data_version": 3300,
+    "day_ago_created": 1273,
+    "description": "<p>- Sản phẩm hộp kẹp tóc bao gồm: 13 loại kẹp khác nhau: kẹp tóc nơ lớn, nơ nhỏ, kẹp tóc thỏ, kẹp tóc vương miệng, kẹp hoa, kẹp tóc ngôi cột tóc, trong đó là 2 cột đôi 2 bên và 1 dây băng.<br />- Các kẹp tóc gồm nhiều tông màu cam khác nhau.<br />- Hộp hình chữ nhật thiết kế kiểu ngăn kéo, kéo vào đẩy ra trong hộp lớn siêu đẹp.<br />- Thiết kế như hộp nữ trang đáng giá dành riêng cho bé, sở hữu hộp kẹp tóc trang trọng là niềm vui của mỗi bé gái.</p>\n<p>Kích thước hộp: 18x12.5 x5cm<img src=\"https://salt.tikicdn.com/ts/tmp/9e/dc/73/eabc09bc75ee901d2cf52b29168f3add.jpg\" alt=\"\" width=\"750\" height=\"750\" /></p><p>Giá sản phẩm trên Tiki đã bao gồm thuế theo luật hiện hành. Bên cạnh đó, tuỳ vào loại sản phẩm, hình thức và địa chỉ giao hàng mà có thể phát sinh thêm chi phí khác như phí vận chuyển, phụ phí hàng cồng kềnh, thuế nhập khẩu (đối với đơn hàng giao từ nước ngoài có giá trị trên 1 triệu đồng).....</p>",
+    "gift_item_title": "0 quà tặng kèm",
+    "has_buynow": true,
+    "images": [
+        {
+            "base_url": "https://salt.tikicdn.com/ts/product/9e/dc/73/ed2c0fef52f1dd71edea8173e0a607cf.jpg",
+            "is_gallery": true,
+            "label": null,
+            "large_url": "https://salt.tikicdn.com/cache/w1200/ts/product/9e/dc/73/ed2c0fef52f1dd71edea8173e0a607cf.jpg",
+            "medium_url": "https://salt.tikicdn.com/cache/w300/ts/product/9e/dc/73/ed2c0fef52f1dd71edea8173e0a607cf.jpg",
+            "position": null,
+            "small_url": "https://salt.tikicdn.com/cache/200x280/ts/product/9e/dc/73/ed2c0fef52f1dd71edea8173e0a607cf.jpg",
+            "thumbnail_url": "https://salt.tikicdn.com/cache/200x280/ts/product/9e/dc/73/ed2c0fef52f1dd71edea8173e0a607cf.jpg"
+        },
+        {
+            "base_url": "https://salt.tikicdn.com/ts/product/ff/fd/2e/03900e1c7aebff9a69ccabb56b88892e.jpg",
+            "is_gallery": true,
+            "label": null,
+            "large_url": "https://salt.tikicdn.com/cache/w1200/ts/product/ff/fd/2e/03900e1c7aebff9a69ccabb56b88892e.jpg",
+            "medium_url": "https://salt.tikicdn.com/cache/w300/ts/product/ff/fd/2e/03900e1c7aebff9a69ccabb56b88892e.jpg",
+            "position": null,
+            "small_url": "https://salt.tikicdn.com/cache/200x280/ts/product/ff/fd/2e/03900e1c7aebff9a69ccabb56b88892e.jpg",
+            "thumbnail_url": "https://salt.tikicdn.com/cache/200x280/ts/product/ff/fd/2e/03900e1c7aebff9a69ccabb56b88892e.jpg"
+        }
+    ],
+    "installment_info_v2": null,
+    "inventory_type": "instock",
+    "is_acoholic_drink": false,
+    "is_baby_milk": false,
+    "is_fresh": false,
+    "is_seller_in_chat_whitelist": true,
+    "is_tier_pricing_available": false,
+    "is_tier_pricing_eligible": false,
+    "master_id": 46600215,
+    "meta_description": "",
+    "meta_keywords": "",
+    "meta_title": "",
+    "other_sellers": [
+        {
+            "id": 37005,
+            "name": "tiện ích giá rẻ",
+            "link": "https://tiki.vn/cua-hang/tien-ich-gia-re",
+            "logo": "",
+            "price": 61998,
+            "product_id": "219178561",
+            "store_id": 36283
+        },
+        {
+            "id": 108825,
+            "name": "CiCi Mart",
+            "link": "https://tiki.vn/cua-hang/hoa-my-pham-hai-dai-phat",
+            "logo": "https://vcdn.tikicdn.com/ts/seller/4b/54/1a/f385a79a716cb3505f152e7af8c769aa.png",
+            "price": 61999,
+            "product_id": "256572738",
+            "store_id": 100730
+        }
+    ],
+    "price_comparison": {
+        "sub_title": "Giá từ 61.998 ₫",
+        "title": "2 nhà bán khác"
+    },
+    "product_links": [],
+    "progress_image_status": true,
+    "promitions": [],
+    "return_and_exchange_policy": "Đổi trả trong<br><b>30 ngày</b><br>nếu sp lỗi.",
+    "review_text": "(211)",
+    "seller_specifications": [
+        {
+            "name": "Tiki hoàn tiền 111% nếu phát hiện hàng giả",
+            "url": null,
+            "value": null
+        },
+        {
+            "name": "Cam kết hàng chính hiệu",
+            "url": null,
+            "value": null
+        }
+    ],
+    "services_and_promotions": [],
+    "short_url": "https://tiki.vn/product-p46600215.html?spid=46600216",
+    "specifications": [
+        {
+            "name": "Content",
+            "attributes": [
+                {
+                    "code": "brand",
+                    "name": "Thương hiệu",
+                    "value": "OEM"
+                },
+                {
+                    "code": "brand_country",
+                    "name": "Xuất xứ thương hiệu",
+                    "value": "Trung Quốc"
+                },
+                {
+                    "code": "origin",
+                    "name": "Xuất xứ",
+                    "value": "Trung Quốc"
+                }
+            ]
+        },
+        {
+            "name": "Operation",
+            "attributes": [
+                {
+                    "code": "is_warranty_applied",
+                    "name": "Sản phẩm có được bảo hành không?",
+                    "value": "Không"
+                }
+            ]
+        }
+    ],
+    "warranty_info": [
+        {
+            "name": "Hướng dẫn bảo hành",
+            "value": "Xem chi tiết",
+            "url": "https://hotro.tiki.vn/s/article/chinh-sach-bao-hanh-tai-tiki-nhu-the-nao"
+        }
+    ],
+    "warranty_policy": null,
+    "is_crawl_detail": true,
+    "status": 200
+}

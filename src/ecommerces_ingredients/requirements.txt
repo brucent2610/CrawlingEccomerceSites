@@ -2,6 +2,6 @@ rq
 requests
 parse
 pathlib
+bs4
 
-mysql-connector-python
 pymongo

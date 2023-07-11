@@ -12,13 +12,17 @@ services:
       - ./mongo/db:/data/db
       - ./mongo/configdb:/data/configdb
       - ./data/backup:/data/backup
-    links:
-      - ecommerce-crawling-mongo-rs1
-      - ecommerce-crawling-mongo-rs2
+      - ./data/tiki:/data/tiki
+    # Open when need replica sets
+    # links:
+    #   - ecommerce-crawling-mongo-rs1
+    #   - ecommerce-crawling-mongo-rs2
     ports:
       - "27017:27017"
     restart: always
-    command: mongod --auth --bind_ip_all --replSet dbrs --keyFile /data/file.key
+    command: mongod --auth --wiredTigerCacheSizeGB 1.5
+    # Open when need replica sets
+    # command: mongod --auth --bind_ip_all --replSet dbrs --keyFile /data/file.key
   ecommerce-crawling-mongo-rs1:
     image: mongo:latest
     environment:
@@ -43,7 +47,6 @@ services:
     volumes:
       - ./mongors/001_users.js:/docker-entrypoint-initdb.d/001_users.js:ro
       - ./mongo/file.key:/data/file.key:ro
-      - ./mongo/setup.sh:/data/setup.sh:ro
       - ./mongors/db2:/data/db
       - ./mongors/configdb2:/data/configdb
     ports:
@@ -65,6 +68,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes: 
       - ./mysql:/var/lib/mysql
+      - ./data/mysql:/var/lib/mysql-files/
   ecommerce-zookeeper:
     image: quay.io/debezium/zookeeper:${DEBEZIUM_VERSION}
     ports:
@@ -103,6 +107,7 @@ services:
       - STATUS_STORAGE_TOPIC=my_source_connect_statuses
     volumes: 
       - ./debezium-jdbc/connector:/kafka-connect/debezium-connector
+      - ./debezium-jdbc/config:/kafka/config
   ecommerce-crawling-app:
     depends_on:
       - ecommerce-crawling-mongo
@@ -112,21 +117,33 @@ services:
       dockerfile: ./docker/.Dockerfile
     volumes:
       - ./src:/usr/src/app
-    command: python main.py
+    # command: python main.py
+    # 1. Run crawling the main categories
+    # command: python spider1.py
+    # 2. Run crawling all sub categories
     # command: python spider2.py
+    # 3. Run crawling all products in all page in each categories 
     # command: python spider3.py
-    # command: scrapy crawl TikiCategoryApi --nolog
-    # command: scrapy crawl TikiProductApi --nolog
+    # 4. Run crawling all products exist in products collection 
+    command: python spider4.py
+
+    # 1. Run when debug the Spider Tiki Page
+    # command: scrapy crawl TikiPage
+    # 2. Run when debug the Spider Category API
+    # command: scrapy crawl TikiCategoryApi
+    # 3. Run when debug the Spider Tiki Categoies
+    # command: scrapy crawl TikiCategoriesPage
+    # 4. Run when debug the Spider Product Detail API
+    # command: scrapy crawl TikiProductApi
     environment:
       ENV: ${ENV}
       MONGO_URI: ${MONGO_URI}
       MONGO_DATABASE: ${MONGO_DATABASE}
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
-      LIMIT: ${LIMIT}
+      LIMIT: 20
+      SKIP: 0
   ecommerce-images-worker:
-    depends_on:
-      - ecommerce-images-redis
+    # depends_on:
+    #   - ecommerce-images-redis
     build:
       context: ./src/ecommerces_images
       dockerfile: ./docker/.Dockerfile
@@ -135,4 +152,126 @@ services:
       - ./data/images:/usr/src/images
     environment:
       ENV: ${ENV}
+      MONGO_URI: ${MONGO_URI}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  ecommerce-mysql-worker:
+    depends_on:
+      - ecommerce-crawling-mongo
+      - ecommerce-mysql
+    build:
+      context: ./src/ecommerces_mysql
+      dockerfile: ./docker/.Dockerfile
+    volumes:
+      - ./src/ecommerces_mysql:/usr/src/app
+      - ./data/images:/usr/src/images
+    environment:
+      ENV: ${ENV}
+      MONGO_URI: ${MONGO_URI}
+      MONGO_DATABASE: ${MONGO_DATABASE}
       REDIS_URL: ${REDIS_URL}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      LIMIT: 200
+      SKIP: 0
+  ecommerce-mysql-worker-2:
+    depends_on:
+      - ecommerce-crawling-mongo
+      - ecommerce-mysql
+    build:
+      context: ./src/ecommerces_mysql
+      dockerfile: ./docker/.Dockerfile
+    volumes:
+      - ./src/ecommerces_mysql:/usr/src/app
+      - ./data/images:/usr/src/images
+    environment:
+      ENV: ${ENV}
+      MONGO_URI: ${MONGO_URI}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      REDIS_URL: ${REDIS_URL}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      LIMIT: 200
+      SKIP: 1000
+  ecommerce-mysql-worker-3:
+    depends_on:
+      - ecommerce-crawling-mongo
+      - ecommerce-mysql
+    build:
+      context: ./src/ecommerces_mysql
+      dockerfile: ./docker/.Dockerfile
+    volumes:
+      - ./src/ecommerces_mysql:/usr/src/app
+      - ./data/images:/usr/src/images
+    environment:
+      ENV: ${ENV}
+      MONGO_URI: ${MONGO_URI}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      REDIS_URL: ${REDIS_URL}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      LIMIT: 200
+      SKIP: 2000
+  ecommerce-mysql-worker-4:
+    depends_on:
+      - ecommerce-crawling-mongo
+      - ecommerce-mysql
+    build:
+      context: ./src/ecommerces_mysql
+      dockerfile: ./docker/.Dockerfile
+    volumes:
+      - ./src/ecommerces_mysql:/usr/src/app
+      - ./data/images:/usr/src/images
+    environment:
+      ENV: ${ENV}
+      MONGO_URI: ${MONGO_URI}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      REDIS_URL: ${REDIS_URL}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      LIMIT: 200
+      SKIP: 3000
+  ecommerce-ingredients-worker:
+    depends_on:
+      - ecommerce-crawling-mongo
+    build:
+      context: ./src/ecommerces_ingredients
+      dockerfile: ./docker/.Dockerfile
+    volumes:
+      - ./src/ecommerces_ingredients:/usr/src/app
+      - ./data/csv:/usr/src/csv
+    environment:
+      ENV: ${ENV}
+      MONGO_URI: ${MONGO_URI}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      LIMIT: ${LIMIT}
+  ecommerce-ingredients-worker-2:
+    depends_on:
+      - ecommerce-crawling-mongo
+    build:
+      context: ./src/ecommerces_ingredients
+      dockerfile: ./docker/.1.Dockerfile
+    volumes:
+      - ./src/ecommerces_ingredients:/usr/src/app
+      - ./data/csv:/usr/src/csv
+    environment:
+      ENV: ${ENV}
+      MONGO_URI: ${MONGO_URI}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      LIMIT: ${LIMIT}

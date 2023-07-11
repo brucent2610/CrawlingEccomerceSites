@@ -12,8 +12,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-COPY ../worker.py .
 COPY ../main.py .
-COPY ../utils.py .
 
-CMD ["python", "main.py"]
+CMD ["python", "main.1.py"]

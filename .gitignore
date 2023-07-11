@@ -1,9 +1,12 @@
 .idea
+!/data/tiki/json-split.py
 /data
 
 #Data and Settings mongo
 /mongo/001_users.js
 /mongors/001_users.js
+
+/debezium-jdbc/config
 
 .env
 

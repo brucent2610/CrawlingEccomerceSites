@@ -6,7 +6,7 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-from Database import Database
+from Database import MongoDB
 
 import os
 
@@ -16,7 +16,7 @@ from rq import Queue
 class EcommercesSpidersPipeline:
 
     def __init__(self):
-        self.database = Database()
+        self.database = MongoDB()
         self.mongodb = self.database.initialize()
 
     def process_item(self, item, spider):
@@ -194,60 +194,89 @@ class EcommercesSpidersTikiProductPipeline:
         self.q = Queue(connection=Redis(host=os.getenv("REDIS_HOST"),port=os.getenv("REDIS_PORT")))
 
     def process_item(self, item, spider):
-        if(item["id"] is None):
+        print("test")
+        if "id" not in item:
             print(self.TAG, "No exist product id")
             return item
         try:
             print(self.TAG, "Start Pipeline: ", spider.name)
 
-            progress_image_status = 1
-            if "images" in item:
+            progress_image_status = 0
+            if "images" in item and item["images"] is not None and len(item["images"]) > 0:
                 try:
                     image_urls = []
-                    if "images" in item:
-                        images = item["images"]
-                        for image in images:
-                            if "base_url" in image:
-                                image_urls.append(image["base_url"])
-                            if "large_url" in image:
-                                image_urls.append(image["large_url"])
-                            if "medium_url" in image:
-                                image_urls.append(image["medium_url"])
-                            if "small_url" in image:
-                                image_urls.append(image["small_url"])
-                            if "thumbnail_url" in item:
-                                image_urls.append(image["thumbnail_url"])
-
-                    print("Add queue to progress image", image_urls)
-                    result_queue = self.q.enqueue("utils.store_images", "tiki", image_urls)
-                    print("result_queue", result_queue)
+                    images = item["images"]
+                    # print("Add queue to progress image", image_urls)
+                    result_image_queue = self.q.enqueue("utils.store_images", "tiki", images)
+                    print("result_image_queue", result_image_queue)
+                    progress_image_status = 1
                 except Exception as error:
-                    print("result_queue", error)
-                    progress_image_status = 0
+                    item["images"] = []
+                    print("result_image_queue", error)
 
             collection = self.mongodb["products"] 
             product = collection.find_one({
                 'id': item["id"]
             })
 
+            selling_count = 0
+            if "quantity_sold" in item:
+                quantity_sold = item["quantity_sold"]
+                selling_count = quantity_sold["value"] if 'value' in quantity_sold else 0
+
+            category_id = 0
+            if "categories" in item:
+                categories = item["categories"]
+                category_id = categories['id'] if 'id' in categories else 0
+
+            # Send Queue to MySQL
+            if "name" in item and item["name"] is not None:
+                try:
+                    result_mysql_queue = self.q.enqueue("utils.store_mysql", {
+                        "name": item["name"],
+                        "short_description": item["short_description"] if 'short_description' in item else "",
+                        "description": item["description"] if 'description' in item else "",
+                        "url_key": item["url_key"] if 'url_key' in item else "",
+                        "rating_average": item["rating_average"] if 'rating_average' in item else 0,
+                        "selling_count": selling_count,
+                        "price": item["price"] if 'price' in item else 0,
+                        "category_id": category_id,
+                        "id": item["id"]
+                    })
+                    print("result_mysql_queue", result_mysql_queue)
+                except Exception as error:
+                    print("result_mysql_queue", error)
+
             item["progress_image_status"] = progress_image_status
-            # item["is_crawl_detail"] = True
+            item["is_crawl_detail"] = True
 
-            if product:
-                item_updated = item.copy()
-                del item_updated['id']
-                result = collection.update_one({
-                    'id': item["id"]
-                }, {
-                    '$set': item_updated
-                })
-                print(self.TAG, 'No. Updated record: ',result.modified_count)
-                print(self.TAG, 'Success update one product: ', item["id"])
+            item_updated = item.copy()
+
+            if "error" not in item:
+                try:
+                    result_unset = collection.update_one({
+                        'id': item["id"]
+                    }, {
+                        '$unset': {
+                            "error": ""
+                        }
+                    })
+                except Exception as error:
+                    print("result_unset", error)
             else:
-                result = collection.insert_one(item)
+                if "response" not in item:
+                    return item
 
-                print(self.TAG, 'Inserted _Id: ', result.inserted_id)
-                print(self.TAG, 'Success insert one product: ', item["id"])
+            del item_updated['id']
+            result = collection.update_one({
+                'id': item["id"]
+            }, {
+                '$set': item_updated
+            }, upsert=True)
+
+            print(result)
+
+            print(self.TAG, 'No. Upsert record: ',result.modified_count, item["id"])
 
         except Exception as error:
             print(self.TAG, 'Could not store product: ', error) 

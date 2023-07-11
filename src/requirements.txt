@@ -6,9 +6,13 @@ rq
 #Scrapy Additional Package
 Scrapy
 scrapy-rotating-proxies
+Twisted==18.9.0
 
 #Mongo
 pymongo
+
+#Mysql
+mysql-connector-python
 
 #Redis
 redis

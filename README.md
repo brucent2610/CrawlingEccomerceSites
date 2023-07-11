@@ -60,7 +60,7 @@ docker-compose up -d ecommerce-crawling-mongo ecommerce-images-redis ecommerce-m
 # JDBC sink connector
 cd debezium-jdbc
 # Create connector
-curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://${ecommerce-debezium-connect}:8083/connectors/ -d @jdbc-sink-post.json
+curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://127.0.0.1:8083/connectors/ -d @jdbc-sink-post.json
 
 # Update connector
 curl -i -X PUT -H "Accept:application/json" -H  "Content-Type:application/json" http://127.0.0.1:8083/connectors/jdbc-sink/config -d @jdbc-sink-put.json
@@ -68,7 +68,7 @@ curl -i -X PUT -H "Accept:application/json" -H  "Content-Type:application/json" 
 # Debezium MongoDB CDC connector
 cd debezium-jdbc
 # Create connector
-curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://${ecommerce-debezium-connect}:8083/connectors/ -d @mongodb-source-post.json
+curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://127.0.0.1:8083/connectors/ -d @mongodb-source-post.json
 # Update connector
 curl -i -X PUT -H "Accept:application/json" -H  "Content-Type:application/json" http://127.0.0.1:8083/connectors/ecommerce-connector/config/ -d @mongodb-source-put.json
 ```
@@ -78,18 +78,30 @@ curl -i -X PUT -H "Accept:application/json" -H  "Content-Type:application/json" 
 docker-compose up ecommerce-crawling-app
 ```
 
-# Backup results
+# Reset database to recheck 
+```
+db.products.updateMany(
+    { is_crawl_detail: true },
+    { $set: { "is_crawl_detail" : false } }
+);
 ```
 
+# Backup results
+```
+[MongoDB backup - 3.92GB](https://1drv.ms/u/s!AoOBJPU4IXLFvSspFhB55anLlNef?e=WBTsXU)
+[Images]()
 ```
 
 # Issues when crawling data
+
 **Missing User Agent**
 - Problem: Website response 404 status
 - Resolve: simulate the User Agent in settings, enable USER_AGENT
+
 **Many Sub Categories inside**
 - Problem: Sub Categories not only in the home page, many level sub categories when crawling inside
 - Resolve: Crawling inside and store all include paging (e.g total, current_page, last_page). base on those can come to inside every page
+
 **Calculation not correct**
 - Problem: Total shows 20 pages but page 19 is empty already and api showing 19 also
 - Resolve: Find them and not run it
@@ -103,6 +115,7 @@ categories = collection.find({
     }
 }).limit(${limit})
 ```
+
 **Duplicate Data**
 - Problem: Crawl sometimes will get duplicate products because of bugs or logic failed
 - Resolve: Using Aggregation to find
@@ -161,6 +174,52 @@ db.categories.aggregate([
         } 
     },
 ]);
+```
+
+**Issues when crawling**
+- Resources not enough RAM or CPU to run, not stable for QUEUE
+- Resolve: not send queue, log the label to know which state running
+
+- Can not crawl faster, request showing capcha page (capcha_page.txt) - status 200 can not verify in first time
+- Resolve: keep crawling until get data
+**Issues not critical**
+- Kafka not get the update messages to mysql
+
+**Issues late deadline**
+- Divide product id to everyone in team
+- Công: 0->200.000 
+- Kiều Nam: 200.001->400.000
+- Nam Nguyen: 400.001->600.000
+
+Dump command:
+```
+mongodump -d ecommerce --uri="mongodb://ecommerce:admin@localhost:27017" --gzip
+```
+
+Restore Command:
+```
+mongorestore -d ecommerce --uri="mongodb://ecommerce:admin@localhost:27017" --gzip ./dump
+```
+
+Import with merge mode
+```
+mongoimport --uri="mongodb://ecommerce:admin@localhost:27017" -c=products -d=ecommerce --mode=merge --file=${file}.json --upsertFields=id --numInsertionWorkers=4 --jsonArray
+```
+
+**File JSON too big**
+- Problem: File JSON too big (4.9GB), progress killed when memory not enough
+- Resolve: split json file to streaming json file
+
+# Requirement Note
+**Find Ingredients**
+```
+db.products.find({ "specifications.attributes.code": "ingredients"});
+db.products.find({ $text: {$search: "\"Thành phần\""}})
+
+# Note: Need to text index description field
+
+# Export csv with query
+
 ```
 
 # Suggestions for using those data

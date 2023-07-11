@@ -1,11 +1,8 @@
 import os
 import mysql.connector
 
-from dotenv import load_dotenv
 from pymongo import MongoClient
 from pymongo import errors
-
-load_dotenv()
 
 class MongoDB(object):
 
@@ -45,13 +42,16 @@ class MySQLDB(object):
             selling_count BIGINT,
             price BIGINT,
             category_id INT,
-            day_ago_created INT
             PRIMARY KEY (product_id)
         )
         """)
 
     def commit(self, query, params):
         self.cur.execute(query, params)
+        self.conn.commit()
+
+    def commitMany(self, query, params):
+        self.cur.executemany(query, params)
         self.conn.commit()
 
     def fetchone(self, query, params):
