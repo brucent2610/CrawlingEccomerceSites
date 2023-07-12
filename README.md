@@ -110,11 +110,10 @@ db.products.updateMany(
 ```
 
 # Backup results
-[MongoDB backup - 3.92 GB](https://1drv.ms/u/s!AoOBJPU4IXLFvSspFhB55anLlNef?e=WBTsXU)
-[Images - 44.5 GB](https://1drv.ms/u/s!AoOBJPU4IXLFvTYjGod1fM59vDRr?e=PM4dba)
-[Incredients - 10.9 MB](https://1drv.ms/x/s!AoOBJPU4IXLFvTeT-UaRNsuPy9Ap?e=fFlPP4)
-
-MySQL backup - Not done yet - missed deadline - **Still running**
+- [MongoDB backup - 3.92 GB](https://1drv.ms/u/s!AoOBJPU4IXLFvSspFhB55anLlNef?e=WBTsXU)
+- [Images - 44.5 GB](https://1drv.ms/u/s!AoOBJPU4IXLFvTYjGod1fM59vDRr?e=PM4dba)
+- [Incredients - 10.9 MB](https://1drv.ms/x/s!AoOBJPU4IXLFvTeT-UaRNsuPy9Ap?e=fFlPP4)
+- MySQL backup - Not done yet - missed deadline - **Still running**
 
 # Issues when crawling data
 
