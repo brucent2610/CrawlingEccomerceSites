@@ -46,7 +46,7 @@ Suggest idea to use those data
 
 # Architecture
 - [Architecture Version 01](https://i.imgur.com/hXIqMrh.png) - First planning
-- [Architecture Version 01.1]([Imgur](https://i.imgur.com/4vmH5wN.png)) - **Current**
+- [Architecture Version 01.1](https://i.imgur.com/4vmH5wN.png) - **Current version**
 - [Architecture Version 02](https://i.imgur.com/aBCdf2K.png) - Upgrade plan with new Redis Queue to progress images and more schema of data (Finished - but failed when many Queue come and can not control the finish mysql and manually trigger to run again)
 - [Architecture Version 03](https://i.imgur.com/VlnOSbG.png) - Upgrade CDC (Change Data Capture) from MongoDB to MySQL (Not Done Yet - Failed when sync message through mysql)
 
@@ -110,13 +110,11 @@ db.products.updateMany(
 ```
 
 # Backup results
-```
 [MongoDB backup - 3.92 GB](https://1drv.ms/u/s!AoOBJPU4IXLFvSspFhB55anLlNef?e=WBTsXU)
 [Images - 44.5 GB](https://1drv.ms/u/s!AoOBJPU4IXLFvTYjGod1fM59vDRr?e=PM4dba)
 [Incredients - 10.9 MB](https://1drv.ms/x/s!AoOBJPU4IXLFvTeT-UaRNsuPy9Ap?e=fFlPP4)
 
 MySQL backup - Not done yet - missed deadline - **Still running**
-```
 
 # Issues when crawling data
 
