@@ -345,7 +345,7 @@ db.products.aggregate([
 - We have review_text base on that we know how many customers has some feedbacks about that product, can add on the rating to know which is good or bad products
 - We can find other_sellers and price_comparison to see best price for products to know where to cheapest or most expensive
 
-# Improving if have time arrage by order need to do
+# Improving if have time need to do
 - Write Procedure MySQL to create the sale money by price and selling_count
 - Finish CDC from MongoDB to MySQL by Debezium
 - Change data capture - CDC data từ MongoDB sang MySQL
