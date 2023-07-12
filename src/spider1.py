@@ -29,3 +29,5 @@ if __name__ == "__main__":
 
     if(database is not None and mongodb is not None): 
         database.close(mongodb)
+
+    sys.exit()

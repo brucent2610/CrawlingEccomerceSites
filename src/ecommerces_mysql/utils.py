@@ -83,10 +83,8 @@ def store_mysql_skip_insert(mysqldb, item):
     else:
         return True
 
-def store_mysql(item):
-
-    mysqldb = MySQLDB()
-
+def store_mysql(mysqldb, item):
+    print("store_mysql", item)
     product_mysql = mysqldb.fetchone("select * from products where product_id = %s", (item['id'],))
 
     if product_mysql:
@@ -143,9 +141,6 @@ def store_mysql(item):
             item["category_id"] if 'category_id' in item else 0
         ))
         print("Stored MySQL: ", item["id"])
-
-    if mysqldb:
-        mysqldb.close()
 
 def store_images(domain, images):
     urls = []

@@ -168,12 +168,11 @@ services:
       dockerfile: ./docker/.Dockerfile
     volumes:
       - ./src/ecommerces_mysql:/usr/src/app
-      - ./data/images:/usr/src/images
     environment:
       ENV: ${ENV}
+      REDIS_URL: ${REDIS_URL}
       MONGO_URI: ${MONGO_URI}
       MONGO_DATABASE: ${MONGO_DATABASE}
-      REDIS_URL: ${REDIS_URL}
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -181,72 +180,6 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       LIMIT: 200
       SKIP: 0
-  ecommerce-mysql-worker-2:
-    depends_on:
-      - ecommerce-crawling-mongo
-      - ecommerce-mysql
-    build:
-      context: ./src/ecommerces_mysql
-      dockerfile: ./docker/.Dockerfile
-    volumes:
-      - ./src/ecommerces_mysql:/usr/src/app
-      - ./data/images:/usr/src/images
-    environment:
-      ENV: ${ENV}
-      MONGO_URI: ${MONGO_URI}
-      MONGO_DATABASE: ${MONGO_DATABASE}
-      REDIS_URL: ${REDIS_URL}
-      MYSQL_HOST: ${MYSQL_HOST}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      LIMIT: 200
-      SKIP: 1000
-  ecommerce-mysql-worker-3:
-    depends_on:
-      - ecommerce-crawling-mongo
-      - ecommerce-mysql
-    build:
-      context: ./src/ecommerces_mysql
-      dockerfile: ./docker/.Dockerfile
-    volumes:
-      - ./src/ecommerces_mysql:/usr/src/app
-      - ./data/images:/usr/src/images
-    environment:
-      ENV: ${ENV}
-      MONGO_URI: ${MONGO_URI}
-      MONGO_DATABASE: ${MONGO_DATABASE}
-      REDIS_URL: ${REDIS_URL}
-      MYSQL_HOST: ${MYSQL_HOST}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      LIMIT: 200
-      SKIP: 2000
-  ecommerce-mysql-worker-4:
-    depends_on:
-      - ecommerce-crawling-mongo
-      - ecommerce-mysql
-    build:
-      context: ./src/ecommerces_mysql
-      dockerfile: ./docker/.Dockerfile
-    volumes:
-      - ./src/ecommerces_mysql:/usr/src/app
-      - ./data/images:/usr/src/images
-    environment:
-      ENV: ${ENV}
-      MONGO_URI: ${MONGO_URI}
-      MONGO_DATABASE: ${MONGO_DATABASE}
-      REDIS_URL: ${REDIS_URL}
-      MYSQL_HOST: ${MYSQL_HOST}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      LIMIT: 200
-      SKIP: 3000
   ecommerce-ingredients-worker:
     depends_on:
       - ecommerce-crawling-mongo
@@ -261,12 +194,12 @@ services:
       MONGO_URI: ${MONGO_URI}
       MONGO_DATABASE: ${MONGO_DATABASE}
       LIMIT: ${LIMIT}
-  ecommerce-ingredients-worker-2:
+  ecommerce-ingredients-html-worker:
     depends_on:
       - ecommerce-crawling-mongo
     build:
       context: ./src/ecommerces_ingredients
-      dockerfile: ./docker/.1.Dockerfile
+      dockerfile: ./docker/.html.Dockerfile
     volumes:
       - ./src/ecommerces_ingredients:/usr/src/app
       - ./data/csv:/usr/src/csv

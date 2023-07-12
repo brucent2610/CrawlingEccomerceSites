@@ -14,7 +14,7 @@ database = MongoDB()
 mongodb = database.initialize()
 mysqldb = MySQLDB()
 
-LIMIT = 200
+LIMIT = 10
 SKIP = os.getenv("SKIP")
 
 if __name__ == "__main__": 
@@ -25,14 +25,30 @@ if __name__ == "__main__":
             "$ne": 1
         }
     }
+
+    fields = { 
+        "name": 1, 
+        "short_description": 1,
+        "description": 1,
+        "url_key": 1,
+        "rating_average": 1,
+        "quantity_sold": 1,
+        "categories": 1,
+        "price": 1,
+        "id": 1,
+        "day_ago_created": 1,
+        "error": 1
+    }
     
-    products = collection.find(query).skip(int(SKIP)).limit(int(LIMIT))
+    products = collection.find(query, fields).skip(int(SKIP)).limit(int(LIMIT))
 
     run_no = 0
     while products:
         ids = []
         insert_products = []
         for item in products:
+
+            print("Progress", item)
 
             if "id" not in item:
                 continue
@@ -64,6 +80,8 @@ if __name__ == "__main__":
                     "day_ago_created": item["day_ago_created"] if 'day_ago_created' in item else 0
                 })
 
+                print("Insert", is_insert)
+
                 if(is_insert):
                     insert_products.append([
                         item["id"],
@@ -77,6 +95,7 @@ if __name__ == "__main__":
                         category_id,
                         item["day_ago_created"] if 'day_ago_created' in item else 0
                     ])
+
                 else:
                     ids.append(item["id"])
 
@@ -101,12 +120,12 @@ if __name__ == "__main__":
                 "progress_mysql_status": 1
             }
         })
+        print("Result", result.modified_count)
 
         run_no = run_no + 1
-        print("Result", result.modified_count)
         print("Run", str(run_no), " times")
 
-        products = collection.find(query).skip(int(SKIP)).limit(int(LIMIT))
+        products = collection.find(query, fields).skip(int(SKIP)).limit(int(LIMIT))
 
     if database is not None and mongodb is not None: 
         database.close(mongodb)

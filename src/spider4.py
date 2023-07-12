@@ -49,8 +49,13 @@ if __name__ == "__main__":
     process.crawl(TikiproductapiSpider, start_urls=urls)
     process.start()
 
+    if len(urls) <= 0:
+        if(database is not None and mongodb is not None): 
+            database.close(mongodb)
+        sys.exit()
+
+    process.crawl(TikicategoryapiSpider, start_urls=urls)
+    process.start()
+
     sleep(0.5)
     os.execl(sys.executable, sys.executable, *sys.argv)
-
-    if(database is not None and mongodb is not None): 
-        database.close(mongodb)

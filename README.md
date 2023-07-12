@@ -46,10 +46,30 @@ Suggest idea to use those data
 
 # Architecture
 - [Architecture Version 01](https://i.imgur.com/hXIqMrh.png) - First planning
-- [Architecture Version 02](https://i.imgur.com/aBCdf2K.png) - Upgrade plan with new Redis Queue to progress images and more schema of data
-- [Architecture Version 03](https://i.imgur.com/VlnOSbG.png) - Upgrade CDC (Change Data Capture) from MongoDB to MySQL
+- [Architecture Version 01.1]([Imgur](https://i.imgur.com/4vmH5wN.png)) - **Current**
+- [Architecture Version 02](https://i.imgur.com/aBCdf2K.png) - Upgrade plan with new Redis Queue to progress images and more schema of data (Finished - but failed when many Queue come and can not control the finish mysql and manually trigger to run again)
+- [Architecture Version 03](https://i.imgur.com/VlnOSbG.png) - Upgrade CDC (Change Data Capture) from MongoDB to MySQL (Not Done Yet - Failed when sync message through mysql)
 
-# Preparations
+# Version 1.1
+## Prepatations
+```
+# Prepare env file
+cp .env.example .env
+
+# Run services to support the crawling
+docker-compose up -d ecommerce-crawling-mongo ecommerce-mysql
+```
+## Running crawling
+```
+docker-compose up ecommerce-crawling-app
+docker-compose up ecommerce-images-worker
+docker-compose up ecommerce-mysql-worker
+docker-compose up ecommerce-ingredients-worker
+docker-compose up ecommerce-ingredients-html-worker
+```
+
+# Version 2.0 and 3.0
+## Prepatations
 ```
 # Prepare env file
 cp .env.example .env
@@ -72,10 +92,13 @@ curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json"
 # Update connector
 curl -i -X PUT -H "Accept:application/json" -H  "Content-Type:application/json" http://127.0.0.1:8083/connectors/ecommerce-connector/config/ -d @mongodb-source-put.json
 ```
-
-# Running crawling
+## Running crawling
 ```
 docker-compose up ecommerce-crawling-app
+docker-compose up ecommerce-images-worker
+docker-compose up ecommerce-mysql-worker
+docker-compose up ecommerce-ingredients-worker
+docker-compose up ecommerce-ingredients-html-worker
 ```
 
 # Reset database to recheck 
@@ -88,8 +111,11 @@ db.products.updateMany(
 
 # Backup results
 ```
-[MongoDB backup - 3.92GB](https://1drv.ms/u/s!AoOBJPU4IXLFvSspFhB55anLlNef?e=WBTsXU)
-[Images]()
+[MongoDB backup - 3.92 GB](https://1drv.ms/u/s!AoOBJPU4IXLFvSspFhB55anLlNef?e=WBTsXU)
+[Images - 44.5 GB](https://1drv.ms/u/s!AoOBJPU4IXLFvTYjGod1fM59vDRr?e=PM4dba)
+[Incredients - 10.9 MB](https://1drv.ms/x/s!AoOBJPU4IXLFvTeT-UaRNsuPy9Ap?e=fFlPP4)
+
+MySQL backup - Not done yet - missed deadline - **Still running**
 ```
 
 # Issues when crawling data
@@ -180,10 +206,9 @@ db.categories.aggregate([
 - Resources not enough RAM or CPU to run, not stable for QUEUE
 - Resolve: not send queue, log the label to know which state running
 
-- Can not crawl faster, request showing capcha page (capcha_page.txt) - status 200 can not verify in first time
+**Can not crawl faster**
+- Request showing capcha page (capcha_page.txt) - status 200 can not verify in first time
 - Resolve: keep crawling until get data
-**Issues not critical**
-- Kafka not get the update messages to mysql
 
 **Issues late deadline**
 - Divide product id to everyone in team
@@ -215,11 +240,117 @@ mongoimport --uri="mongodb://ecommerce:admin@localhost:27017" -c=products -d=eco
 ```
 db.products.find({ "specifications.attributes.code": "ingredients"});
 db.products.find({ $text: {$search: "\"Thành phần\""}})
+```
+- Note: Need to text index description field
+- Export csv with query
 
-# Note: Need to text index description field
-
-# Export csv with query
-
+**Top 10 selling**
+```
+db.products.find({"_id": 0, "id": 1, "name": 1, "selling_count": "$quantity_sold.value"}).sort("quantity_sold.value", -1).limit;
+```
+**Top 10 rating**
+```
+db.products.find({"_id": 0, "id": 1, "name": 1, "rating_average": 1}).sort("rating_average", -1).limit(10);
 ```
 
+**Top 10 rating**
+```
+db.products.find({"_id": 0, "id": 1, "name": 1, "rating_average": 1});
+```
+**Top 10 lowest price**
+```
+db.products.find({"_id": 0, "id": 1, "name": 1, "price": 1}).sort("price", 1).limit(10);
+```
+**Category Products Counting**
+- Using the aggregate in mongo to get report to new collection (categories_count). Then export csv and show report
+```
+db.products.aggregate([
+    {
+        $match: {
+            "categories.id": {
+                $gt: 0,
+            },
+        },
+    },
+    {
+        $project: {
+            categories: 1,
+        }
+    },
+    {
+        $group: {
+            _id: "$categories.name",
+            count: {
+                $sum: 1,
+            },
+        }
+    },
+    {
+        $sort: {
+            count: -1,
+        }
+    },
+    {
+        $skip: 0
+    },
+    {
+        $limit: 3000
+    },
+    { $out : "categories_count" }
+]);
+```
+**Brand Countries Products Counting**
+- Using the aggregate in mongo to get report to new collection (brand_countries_count). Then export csv and show report
+```
+db.products.aggregate([
+    {
+        $project: {
+            "id": 1,
+            "specifications.attributes": 1
+        }
+    },
+    {
+        $unwind: "$specifications",
+    },
+    {
+        $unwind: "$specifications.attributes",
+    },
+    {
+        $match: {
+            "specifications.attributes.code": "brand_country",
+        },
+    },
+    {
+        $group: {
+            _id: "$specifications.attributes.value",
+            count: {
+                $sum: 1,
+            },
+        }
+    },
+    {
+        $skip: 10,
+    },
+    {
+        $limit: 200
+    },
+    { $out : "brand_countries_count" }
+]);
+```
+
+**Issues not critical**
+- Kafka not get the update messages to mysql
+- Resolve: not yet
+
 # Suggestions for using those data
+- We can use the specifications.attribute.code to check how many products in tiki has is_warranty_applied => which categories or which brand can trust to invest
+- We have the favourate_count. I think that one how many customers added to wishlist already, we can leverage that to invest
+- We have review_text base on that we know how many customers has some feedbacks about that product, can add on the rating to know which is good or bad products
+- We can find other_sellers and price_comparison to see best price for products to know where to cheapest or most expensive
+
+# Improving if have time arrage by order need to do
+- Write Procedure MySQL to create the sale money by price and selling_count
+- Finish CDC from MongoDB to MySQL by Debezium
+- Change data capture - CDC data từ MongoDB sang MySQL
+- Improve and restructure codebase
+- Write Unit-Test
