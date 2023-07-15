@@ -111,9 +111,9 @@ db.products.updateMany(
 
 # Backup results
 - [MongoDB backup - 3.92 GB](https://1drv.ms/u/s!AoOBJPU4IXLFvSspFhB55anLlNef?e=WBTsXU)
+- [MySQL backup - 4.42 GB](https://1drv.ms/u/s!AoOBJPU4IXLFvUZEY0D4SD_hy7Ws?e=Y9Stbt)
 - [Images - 44.5 GB](https://1drv.ms/u/s!AoOBJPU4IXLFvTYjGod1fM59vDRr?e=PM4dba)
 - [Incredients - 10.9 MB](https://1drv.ms/x/s!AoOBJPU4IXLFvTeT-UaRNsuPy9Ap?e=fFlPP4)
-- MySQL backup - Not done yet - missed deadline - **Still running**
 
 # Issues when crawling data
 
@@ -232,6 +232,45 @@ mongoimport --uri="mongodb://ecommerce:admin@localhost:27017" -c=products -d=eco
 - Problem: File JSON too big (4.9GB), progress killed when memory not enough
 - Resolve: split json file to streaming json file
 
+**Run Sync MySQL long**
+- Run Sync MySQL long time, 2 days only 400.000 to 500.000. Because the progress convert data to string to INSERT Many to MySQL
+- Resolve: 
+-- Export CSV from MongoDB and import to MySQL with new tables
+```
+LOAD DATA INFILE "/var/lib/mysql-files/products.csv"
+INTO TABLE products
+COLUMNS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+ESCAPED BY '"'
+LINES TERMINATED BY '\r\n'
+IGNORE 1 LINES;
+```
+-- Change format field id with Primary key and name of another columns
+```
+UPDATE ecommerce.products SET category_id = '0' WHERE category_id = '';
+UPDATE ecommerce.products SET day_ago_created = '0' WHERE day_ago_created = '';
+
+ALTER TABLE `ecommerce`.`products` 
+CHANGE COLUMN `id` `id` INT NOT NULL ,
+ADD PRIMARY KEY (`id`),
+ADD UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE;
+
+ALTER TABLE `ecommerce`.`products` 
+CHANGE COLUMN `price` `price` BIGINT NOT NULL DEFAULT 0,
+CHANGE COLUMN `rating_average` `rating_average` FLOAT NOT NULL DEFAULT 0,
+CHANGE COLUMN `short_url` `short_url` VARCHAR(255) NULL DEFAULT NULL,
+CHANGE COLUMN `categories.id` `categories_id` TEXT NULL DEFAULT NULL,
+CHANGE COLUMN `quantity_sold.value` `selling_count` TEXT NULL DEFAULT NULL,
+CHANGE COLUMN `category_id` `category_id` INT NULL DEFAULT NULL,
+CHANGE COLUMN `day_ago_created` `day_ago_created` INT NULL DEFAULT NULL,
+CHANGE COLUMN `description` `description` LONGTEXT NULL DEFAULT NULL ;
+```
+-- 
+
+**Issues not critical**
+- Kafka not get the update messages to mysql
+- Resolve: not yet
+
 # Requirement Note
 **Find Ingredients**
 ```
@@ -334,10 +373,6 @@ db.products.aggregate([
     { $out : "brand_countries_count" }
 ]);
 ```
-
-**Issues not critical**
-- Kafka not get the update messages to mysql
-- Resolve: not yet
 
 # Suggestions for using those data
 - We can use the specifications.attribute.code to check how many products in tiki has is_warranty_applied => which categories or which brand can trust to invest

@@ -84,8 +84,8 @@ def store_mysql_skip_insert(mysqldb, item):
         return True
 
 def store_mysql(mysqldb, item):
-    print("store_mysql", item)
-    product_mysql = mysqldb.fetchone("select * from products where product_id = %s", (item['id'],))
+    # print("store_mysql", item)
+    product_mysql = mysqldb.fetchone("select product_id from products where product_id = %s", (item['id'],))
 
     if product_mysql:
         mysqldb.commit(""" 
@@ -93,8 +93,8 @@ def store_mysql(mysqldb, item):
                 SET name = %s,
                     short_description = %s,
                     description = %s,
-                    url = %s,
-                    rating = %s,
+                    short_url = %s,
+                    rating_average = %s,
                     selling_count = %s,
                     price = %s,
                     category_id = %s
@@ -102,7 +102,7 @@ def store_mysql(mysqldb, item):
                 item["name"] if 'name' in item else "",
                 item["short_description"] if 'short_description' in item else "",
                 item["description"] if 'description' in item else "",
-                item["url_key"] if 'url_key' in item else "",
+                item["short_url"] if 'short_url' in item else "",
                 item["rating_average"] if 'rating_average' in item else 0,
                 item["selling_count"] if 'selling_count' in item else 0,
                 item["price"] if 'price' in item else 0,
@@ -116,8 +116,8 @@ def store_mysql(mysqldb, item):
             name, 
             short_description, 
             description, 
-            url, 
-            rating, 
+            short_url, 
+            rating_average, 
             selling_count, 
             price, 
             category_id) VALUES (
@@ -134,7 +134,7 @@ def store_mysql(mysqldb, item):
             item["name"] if 'name' in item else "",
             item["short_description"] if 'short_description' in item else "",
             item["description"] if 'description' in item else "",
-            item["url_key"] if 'url_key' in item else "",
+            item["short_url"] if 'short_url' in item else "",
             item["rating_average"] if 'rating_average' in item else 0,
             item["selling_count"] if 'selling_count' in item else 0,
             item["price"] if 'price' in item else 0,
