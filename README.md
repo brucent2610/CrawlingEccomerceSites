@@ -235,7 +235,7 @@ mongoimport --uri="mongodb://ecommerce:admin@localhost:27017" -c=products -d=eco
 **Run Sync MySQL long**
 - Run Sync MySQL long time, 2 days only 400.000 to 500.000. Because the progress convert data to string to INSERT Many to MySQL
 - Resolve: 
--- Export CSV from MongoDB and import to MySQL with new tables
+- - Export CSV from MongoDB and import to MySQL with new tables
 ```
 LOAD DATA INFILE "/var/lib/mysql-files/products.csv"
 INTO TABLE products
@@ -245,7 +245,7 @@ ESCAPED BY '"'
 LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES;
 ```
--- Change format field id with Primary key and name of another columns
+- - Change format field id with Primary key and name of another columns
 ```
 UPDATE ecommerce.products SET category_id = '0' WHERE category_id = '';
 UPDATE ecommerce.products SET day_ago_created = '0' WHERE day_ago_created = '';
@@ -265,7 +265,6 @@ CHANGE COLUMN `category_id` `category_id` INT NULL DEFAULT NULL,
 CHANGE COLUMN `day_ago_created` `day_ago_created` INT NULL DEFAULT NULL,
 CHANGE COLUMN `description` `description` LONGTEXT NULL DEFAULT NULL ;
 ```
--- 
 
 **Issues not critical**
 - Kafka not get the update messages to mysql
